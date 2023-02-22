@@ -3,16 +3,27 @@ sequenceDiagram
     participant Browser
     participant Server
 
-    activate Browser
-    Browser->>Browser: notes.push(note) 
-    deactivate Browser
-
-    Note right of Browser: The note created is attached and the browser rerenders the list 
-
-    Browser->>Server: POST https://studies.cs.helsinki.fi/exampleapp/notes
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa
     activate Server
-    Server->>Browser: 201 Created
+    Server->>Browser: HTML Document
     deactivate Server
 
-    Note right of Browser: The data from the form is sent to the server as a JSON
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate Server
+    Server-->>Browser: the css file
+    deactivate Server
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate Server
+    Server-->>Browser: the JavaScript file
+    deactivate Server
+
+    Browser->>Server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate Server
+    Server-->>Browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate Server
+
+    activate Browser
+    Browser->>Browser: redrawNotes()
+    deactivate Browser
 ```
